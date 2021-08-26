@@ -1,0 +1,105 @@
+1. Decomposition
+2. Abstraction
+3. Encapsulation
+  - privacy
+
+No interface in Python -> multiple inheritance (known as mixin).
+But in other cases instead of using Inheritance (single), it's better to use Composition.
+As inheritance is a special case for super() class and not to reuse code
+
+Polymorphism: https://www.programiz.com/python-programming/polymorphism
+
+Adapter: abstraction around an interface of the third-party libraries for your own code
+
+Abstraction takes many forms: decomposition, encapsulation, programmingstyle, and inheritance versus composition.
+
+
+timeit; cProfile
+
+
+Testing.
+
+1. Functional: unit, integration, manual
+2. Performance testing
+3. Load testing (wrk)
+
+
+Separation of concerns
+- multitier architecture: presentation layer, business logic layer, persistence layer
+
+Application architecture pattern: separating application into aforementioned layers is a
+common pattern. Some variations of multitier architecture are: MVC & MVVM
+
+
+In Bark, Command classes in the business logic provide an execute method as partof their interface. The presentation layer uses this interface when a user selects anoption. The implementation of a particular command can change as much as it needsto, and no change is required in the presentation layer as long as the interface staysthe same. You would only need to change the presentation layer if, for example, theCommand classes’ execute methods required an additional argument.This gets back to cohesion as well. Code that is closely related will not need to relyon interfaces; it’s close enough together that inserting an interface will feel forced.On the other hand, code that’s already in different classes or modules has alreadybeen separated, so using shared interfaces instead of directly reaching into otherclasses is most likely the way to go.
+
+Sharing agreed-upon interfaces between classes instead of giving them detailedknowledge about each other reduces coupling
+
+Inversion of control allows other code to customize behavior to its needs withoutchanging the low-level implementation
+
+
+
+When to use inheritance?
+
+Though many still reach for inheritance to reuse code in some class, that’s not whatit’s for. Inheritance is for specialization of behavior. Put another way, you should fight theurge to subclass only to reuse code. Create subclasses to make a method return a differentvalue or work differently under the hood.In this sense, subclasses should be treated as special cases of their superclass. Theywill reuse code from the superclass, but only as a natural result of the idea that aninstance of the subclass is an instance of the superclass.
+
+
+
+Barbara Liskov, Institute Professor at MIT, developed a principle outlining the conceptof substitutability as it relates to inheritance. The Liskov substitution principlestates that in a program, any instance of a class must be replaceable by an instance ofone of its subclasses without affecting the correctness of the program.2 Correctness inthis context means the program remains error-free and achieves the same basic outcomes,though the precise result may be different or achieved in a different manner.Substitutability arises from subclasses strictly adhering to their superclasses’ interface.
+
+I.e. if you add some instance to child class -> it'll break structure as superclass() will
+differ from child class
+
+
+Principles:
+
+1. The problem you’re solving has a shallow, narrow hierarchy.2. Subclasses are at the leaves of the object graph; they don’t make use of otherobjects.3. Subclasses use (or specialize) all the behavior of their superclass.
+
+
+MRO succession:
+
+1 Generate a depth-first ordering of the superclasses, from left to right. For Ligerthis is Lion (leftmost parent), BigCat (the only parent of Lion), object (theimplicit parent of BigCat), Tiger (the next parent of Liger), BigCat, andobject (see figure 8.6).2 Remove any duplicates. The list becomes Liger, Lion, BigCat, object, and Tiger.3 Move each class so that it appears after all of its subclasses. The final list isLiger, Lion, Tiger, BigCat, object.
+
+When you ask for super().eats(), Python will work its way through the method resolutionorder until it finds an eats() method on one of the classes (other than the one youcalled super() from)
+
++ Python has something similar to interface which can be found in Abstractclasses
+
+Mixin vs ABC: https://stackoverflow.com/a/27907511
+
+
+Check for bookmarks-app:
+1. Commands have a shallow, narrow hierarchy. Seven command classes wide, eachone level of hierarchy deep.2. Commands don’t know about other objects. They do make use of the databaseconnection object, but that’s a piece of global state that adheres to a databaseinterface.3. Commands use or specialize all of the functionality from their superclass. Command is anabstract class with no behavior itself.
+
+
+
+Extracting configuration into a map also makes code much more readable, in myexperience. Trying to sift through a number of if/elif conditions is tiresome, evenwhen they’re all fairly similar. In contrast, a dictionary’s keys are generally scannable
+
+
+Backword compatibility
+
+Use forwarding and deprecation warnings to temporarily support the new andold ways of doing things
+
+I.e. have composition in instances of a new class and that instance can use it's
+methods. `return self.author_class.author_for_citation` 
+
+
+Coupling
+
+Coupling between two pieces of code (modules, classes, and so on) is considered tightwhen those pieces of code are interconnected. But what does interconnectednesslook like? In your code, several things create interconnections:
+1. A class that stores another object as an attribute2. A class whose methods call functions from another module3. A function or method that does a lot of procedural work using methods from another objectAnytime a class, method, or function needs to carry a lot of knowledge about anothermodule or class, that’s tight coupling.
+
+
+Loosely coupled code implements and uses interfaces; at the extreme end, it usesonly interfaces for intercommunication. Python’s dynamic typing allows us to relaxthis a bit, but there’s a philosophy here I’d really like to emphasize to you.If you begin to think about the intercommunication between pieces of your codein terms of the messages that objects send to each other (figure 10.2), rather thanfocusing on the objects themselves, you’ll begin to identify cleaner abstractions andstronger cohesion. What are messages? Messages are the questions you ask of anobject or the things you tell it to do.
+
+
+Various types of coupling
+
+1. Feature envy
+2. Shotgun surgery
+3. Leaky abstractions
+
+When you find yourself providing access to a low-level detail from a high-level layerof abstraction, you’re likely introducing coupling. Remember that loose couplingrelies on interfaces—shared abstractions—rather than specific low-level details. Readon to see some of the specific strategies you can use to achieve loose coupling in yourcode.
+
+
+
+
